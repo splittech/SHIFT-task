@@ -24,6 +24,15 @@ public record AppSettings(
         FULL
     }
 
+    public static AppSettings defaultSettings() {
+        return new AppSettings(
+                AppSettings.DEFAULT_OUTPUT_FILES_PATH,
+                AppSettings.DEFAULT_OUTPUT_FILES_PREFIX,
+                AppSettings.DEFAULT_FILE_WRITE_MODE,
+                AppSettings.DEFAULT_STATISTICS_LEVEL
+        );
+    }
+
     public static class Builder {
         private Path outputFilesPath = DEFAULT_OUTPUT_FILES_PATH;
         private String outputFilesPrefix = DEFAULT_OUTPUT_FILES_PREFIX;
