@@ -22,14 +22,14 @@ public class BigIntegerFullStatistics extends SummaryStatistics {
             min = integerValue;
         if (max == null || integerValue.compareTo(max) > 0)
             max = integerValue;
-        sum.add(integerValue);
+        sum = sum.add(integerValue);
     }
 
     @Override
     protected String assembleStatisticsMessage() {
         BigDecimal avg = null;
 
-        if (!lineCount.equals(BigDecimal.ZERO)) {
+        if (!lineCount.equals(BigInteger.ZERO)) {
             avg = new BigDecimal(sum).divide(new BigDecimal(lineCount), 100, RoundingMode.HALF_UP);
         }
 

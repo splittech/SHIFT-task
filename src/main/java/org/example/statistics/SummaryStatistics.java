@@ -3,8 +3,8 @@ package org.example.statistics;
 import java.math.BigInteger;
 
 public class SummaryStatistics extends BaseStatistics {
+    private final String fileName;
     protected BigInteger lineCount = BigInteger.ZERO;
-    private String fileName;
 
     public SummaryStatistics(String fileName) {
         this.fileName = fileName;

@@ -1,10 +1,8 @@
 package org.example.statistics;
 
-import java.math.BigInteger;
-
 public class StringFullStatistics extends SummaryStatistics {
     int minLength = Integer.MAX_VALUE;
-    int maxLength = Integer.MIN_VALUE;;
+    int maxLength = Integer.MIN_VALUE;
 
     public StringFullStatistics(String fileName) {
         super(fileName);
