@@ -115,19 +115,6 @@ public class CLIReader {
         return settingsBuilder.build();
     }
 
-    private void printHelp(Options options) {
-        HelpFormatter formatter = new HelpFormatter();
-        PrintWriter printWriter = new PrintWriter(System.out);
-
-        String appUsage = "java -jar " + APP_NAME + ".jar [options] [files]";
-
-        printWriter.println();
-        formatter.printUsage(printWriter, 100, appUsage);
-        formatter.printOptions(printWriter, 100, options, 2, 5);
-
-        printWriter.flush();
-    }
-
     private ArrayList<Path> readFiles(CommandLine commandLine) {
         if (commandLine.hasOption(ARG_HELP.getLongOpt())) {
             return new ArrayList<>();
@@ -158,6 +145,19 @@ public class CLIReader {
         }
 
         return files;
+    }
+
+    private void printHelp(Options options) {
+        HelpFormatter formatter = new HelpFormatter();
+        PrintWriter printWriter = new PrintWriter(System.out);
+
+        String appUsage = "java -jar " + APP_NAME + ".jar [options] [files]";
+
+        printWriter.println();
+        formatter.printUsage(printWriter, 100, appUsage);
+        formatter.printOptions(printWriter, 100, options, 2, 5);
+
+        printWriter.flush();
     }
 
     public AppSettings getAppSettings() {
