@@ -1,10 +1,8 @@
 package org.example.statistics;
 
-import java.math.BigInteger;
-
 public class SummaryStatistics extends BaseStatistics {
     private final String fileName;
-    protected BigInteger lineCount = BigInteger.ZERO;
+    protected int lineCount;
 
     public SummaryStatistics(String fileName) {
         this.fileName = fileName;
@@ -12,11 +10,14 @@ public class SummaryStatistics extends BaseStatistics {
 
     @Override
     public void updateStatistics(String value) {
-        lineCount = lineCount.add(BigInteger.ONE);
+        lineCount++;
     }
 
     @Override
     protected String assembleStatisticsMessage() {
-        return "File: %-20s  count: %-5d".formatted(fileName, lineCount);
+        return String.format("File: %-20s  count: %-5d",
+                fileName,
+                lineCount
+        );
     }
 }

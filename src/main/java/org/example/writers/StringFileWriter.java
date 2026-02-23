@@ -5,12 +5,12 @@ import org.example.statistics.BaseStatistics;
 import org.example.statistics.StringFullStatistics;
 import org.example.statistics.SummaryStatistics;
 
-public class StringFileWriter extends BaseFileWriter {
+public class StringFileWriter extends BaseTypedFileWriter {
     public static final String BASE_FILE_NAME = "strings.txt";
 
     public StringFileWriter(AppSettings settings) {
         String fileName = settings.outputFilesPrefix() + BASE_FILE_NAME;
-        BaseStatistics statisticsService = switch (settings.statisticsLevel()){
+        BaseStatistics statisticsService = switch (settings.statisticsLevel()) {
             case FULL -> new StringFullStatistics(fileName);
             case SUMMARY -> new SummaryStatistics(fileName);
             case NONE -> null;

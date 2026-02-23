@@ -1,6 +1,6 @@
 package org.example.core;
 
-import org.example.writers.BaseFileWriter;
+import org.example.writers.BaseTypedFileWriter;
 import org.example.writers.BigDecimalFileWriter;
 import org.example.writers.BigIntegerFileWriter;
 import org.example.writers.StringFileWriter;
@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.List;
 
 public class FileProcessor {
     private final AppSettings settings;
@@ -19,37 +19,42 @@ public class FileProcessor {
         this.settings = settings;
     }
 
-    public void processFiles(ArrayList<Path> files) {
-        ArrayList<BaseFileWriter> fileWriters = arrangeFileWriters();
+    public void processFiles(List<Path> files) {
+        List<BaseTypedFileWriter> fileWriters = arrangeFileWriters();
 
         for (Path file : files) {
-            processFile(file, fileWriters);
+            try {
+                processFile(file, fileWriters);
+            }
+            catch (IOException e) {
+                System.err.printf("Failed to process file %s: %s%n",
+                        file,
+                        e.getMessage()
+                );
+            }
         }
-        for (BaseFileWriter fileWriter : fileWriters) {
+        for (BaseTypedFileWriter fileWriter : fileWriters) {
             fileWriter.close();
         }
     }
 
-    void processFile(Path file, ArrayList<BaseFileWriter> fileWriters) {
+    void processFile(Path file, List<BaseTypedFileWriter> fileWriters) throws IOException{
         try (BufferedReader reader = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
             String nextLine = reader.readLine();
             while (nextLine != null) {
-                for (BaseFileWriter fileWriter : fileWriters) {
-                    if (fileWriter.tryWriteLine(nextLine)) break;
+                for (BaseTypedFileWriter fileWriter : fileWriters) {
+                    if (fileWriter.tryWriteTypedString(nextLine)) break;
                 }
                 nextLine = reader.readLine();
             }
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 
-    private ArrayList<BaseFileWriter> arrangeFileWriters() {
-        ArrayList<BaseFileWriter> fileWriters = new ArrayList<>();
-        fileWriters.add(new BigIntegerFileWriter(settings));
-        fileWriters.add(new BigDecimalFileWriter(settings));
-        fileWriters.add(new StringFileWriter(settings));
-        return fileWriters;
+    private List<BaseTypedFileWriter> arrangeFileWriters() {
+        return List.of(
+                new BigIntegerFileWriter(settings),
+                new BigDecimalFileWriter(settings),
+                new StringFileWriter(settings)
+        );
     }
 }

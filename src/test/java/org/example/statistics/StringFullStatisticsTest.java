@@ -26,7 +26,7 @@ class StringFullStatisticsTest {
     void printStatistics() {
         BaseStatistics statisticsService = new StringFullStatistics("test.txt");
         String[] testValues = {"test", "1236657", "<ABRA>", "=-123s*&(^@!#!#"};
-        String expectedString = "[STAT] File: test.txt              count: 4    min length: 4             max length: 15" + System.lineSeparator();
+        String expectedString = "[STAT] File: test.txt              count: 4     min length: 4             max length: 15" + System.lineSeparator();
 
         for (String value : testValues) {
             statisticsService.updateStatistics(value);

@@ -13,12 +13,12 @@ class BigIntegerWriterTest {
     @Test
     void write_manyIntegerValues() throws IOException {
         String[] testValues = {"45", "100500", "1234567890123456789"};
-        BaseFileWriter writer = new StringFileWriter(AppSettings.defaultSettings());
+        BaseTypedFileWriter writer = new StringFileWriter(AppSettings.defaultSettings());
         Path createdFile = Path.of(writer.getBaseFileName());
         Files.deleteIfExists(createdFile);
 
         for (String testValue : testValues) {
-            writer.tryWriteLine(testValue);
+            writer.tryWriteTypedString(testValue);
         }
         writer.close();
         Assertions.assertTrue(Files.exists(createdFile));

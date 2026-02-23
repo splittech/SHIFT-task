@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.List;
 
 class CLIReaderTest {
 
@@ -128,7 +128,7 @@ class CLIReaderTest {
         String[] args = {FIRST_FILE_NAME, SECOND_FILE_NAME};
 
         CLIReader cliReader = new CLIReader(args);
-        ArrayList<Path> files = cliReader.getFiles();
+        List<Path> files = cliReader.getFiles();
 
         Assertions.assertEquals(2, files.size());
         Assertions.assertEquals(Path.of(FIRST_FILE_NAME), files.get(0));

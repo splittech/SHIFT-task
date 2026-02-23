@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CLIReader {
     public static final String APP_NAME = "uXl";
@@ -54,7 +55,7 @@ public class CLIReader {
             .build();
 
     private final AppSettings appSettings;
-    private final ArrayList<Path> files;
+    private final List<Path> files;
 
     public CLIReader(String[] args) {
         Options options = createOptions();
@@ -66,22 +67,21 @@ public class CLIReader {
 
     private Options createOptions() {
         Options options = new Options();
-        options.addOption(ARG_HELP);
-        options.addOption(ARG_OUTPUT_PATH);
-        options.addOption(ARG_OUTPUT_PREFIX);
-        options.addOption(ARG_APPEND_MODE);
-        options.addOption(ARG_STATISTICS_SUMMARY);
-        options.addOption(ARG_STATISTICS_FULL);
+        options.addOption(ARG_HELP)
+                .addOption(ARG_OUTPUT_PATH)
+                .addOption(ARG_OUTPUT_PREFIX)
+                .addOption(ARG_APPEND_MODE)
+                .addOption(ARG_STATISTICS_SUMMARY)
+                .addOption(ARG_STATISTICS_FULL);
         return options;
     }
 
     private CommandLine setUpCommandLine(String[] args, Options options) {
         CommandLineParser commandLineParser = new DefaultParser();
         try {
-            return  commandLineParser.parse(options, args);
-        }
-        catch (ParseException e) {
-            throw new CLIProcessingException(e.getMessage());
+            return commandLineParser.parse(options, args);
+        } catch (ParseException e) {
+            throw new CLIProcessingException("Error on command line setup: " + e.getMessage());
         }
     }
 
@@ -91,43 +91,42 @@ public class CLIReader {
         if (commandLine.hasOption(ARG_HELP.getLongOpt())) {
             printHelp(options);
         }
-        if(commandLine.hasOption(ARG_OUTPUT_PATH.getLongOpt())) {
+        if (commandLine.hasOption(ARG_OUTPUT_PATH.getLongOpt())) {
             Path path = Path.of(commandLine.getOptionValue(ARG_OUTPUT_PATH));
             settingsBuilder.outputFilesPath(path);
         }
-        if(commandLine.hasOption(ARG_OUTPUT_PREFIX.getLongOpt())) {
+        if (commandLine.hasOption(ARG_OUTPUT_PREFIX.getLongOpt())) {
             String prefix = commandLine.getOptionValue(ARG_OUTPUT_PREFIX);
             settingsBuilder.outputFilesPrefix(prefix);
         }
-        if(commandLine.hasOption(ARG_APPEND_MODE.getLongOpt())) {
+        if (commandLine.hasOption(ARG_APPEND_MODE.getLongOpt())) {
             settingsBuilder.fileWriteMode(AppSettings.FileWriteMode.APPEND);
         }
 
-        if(commandLine.hasOption(ARG_STATISTICS_SUMMARY.getLongOpt()) &&
-           commandLine.hasOption(ARG_STATISTICS_FULL.getLongOpt())) {
-            throw new CLIProcessingException("full and summary statistics cannot be enabled simultaneously.");
-        } else if(commandLine.hasOption(ARG_STATISTICS_SUMMARY.getLongOpt())) {
+        if (commandLine.hasOption(ARG_STATISTICS_SUMMARY.getLongOpt()) &&
+                commandLine.hasOption(ARG_STATISTICS_FULL.getLongOpt())) {
+            throw new CLIProcessingException("Full and summary statistics cannot be enabled simultaneously.");
+        } else if (commandLine.hasOption(ARG_STATISTICS_SUMMARY.getLongOpt())) {
             settingsBuilder.statisticsLevel(AppSettings.StatisticsLevel.SUMMARY);
-        } else if(commandLine.hasOption(ARG_STATISTICS_FULL.getLongOpt())) {
+        } else if (commandLine.hasOption(ARG_STATISTICS_FULL.getLongOpt())) {
             settingsBuilder.statisticsLevel(AppSettings.StatisticsLevel.FULL);
         }
 
         return settingsBuilder.build();
     }
 
-    private ArrayList<Path> readFiles(CommandLine commandLine) {
+    private List<Path> readFiles(CommandLine commandLine) {
         if (commandLine.hasOption(ARG_HELP.getLongOpt())) {
             return new ArrayList<>();
         }
-
         if (commandLine.getArgList().isEmpty()) {
-            throw new CLIProcessingException("no files provided.");
+            throw new CLIProcessingException("No files provided.");
         }
 
-        ArrayList<Path> files = new ArrayList<>();
-        ArrayList<String> invalidFiles = new ArrayList<>();
+        List<Path> files = new ArrayList<>();
+        List<String> invalidFiles = new ArrayList<>();
 
-        for(String arg : commandLine.getArgList()) {
+        for (String arg : commandLine.getArgList()) {
             Path file = Path.of(arg);
             if (Files.notExists(file)) {
                 invalidFiles.add(arg + " (not found)");
@@ -139,11 +138,9 @@ public class CLIReader {
             }
             files.add(file);
         }
-
         if (!invalidFiles.isEmpty()) {
             throw new CLIProcessingException(String.join(", ", invalidFiles) + ".");
         }
-
         return files;
     }
 
@@ -151,7 +148,7 @@ public class CLIReader {
         HelpFormatter formatter = new HelpFormatter();
         PrintWriter printWriter = new PrintWriter(System.out);
 
-        String appUsage = "java -jar " + APP_NAME + ".jar [options] [files]";
+        String appUsage = String.format("java -jar %s.jar [options] [files]", APP_NAME);
 
         printWriter.println();
         formatter.printUsage(printWriter, 100, appUsage);
@@ -164,7 +161,7 @@ public class CLIReader {
         return appSettings;
     }
 
-    public ArrayList<Path> getFiles() {
+    public List<Path> getFiles() {
         return files;
     }
 }

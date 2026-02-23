@@ -7,12 +7,12 @@ import org.example.statistics.SummaryStatistics;
 
 import java.math.BigDecimal;
 
-public class BigDecimalFileWriter extends BaseFileWriter {
+public class BigDecimalFileWriter extends BaseTypedFileWriter {
     public static final String BASE_FILE_NAME = "floats.txt";
 
     public BigDecimalFileWriter(AppSettings settings) {
         String fileName = settings.outputFilesPrefix() + BASE_FILE_NAME;
-        BaseStatistics statisticsService = switch (settings.statisticsLevel()){
+        BaseStatistics statisticsService = switch (settings.statisticsLevel()) {
             case FULL -> new BigDecimalFullStatistics(fileName);
             case SUMMARY -> new SummaryStatistics(fileName);
             case NONE -> null;

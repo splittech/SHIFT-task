@@ -26,7 +26,7 @@ class BigDecimalFullStatisticsTest {
     void printStatistics() {
         BaseStatistics statisticsService = new BigDecimalFullStatistics("test.txt");
         String[] testValues = {"12323546", "-123904732894572", "0.213723904573456", "-0.43058743985789"};
-        String expectedString = "[STAT] File: test.txt              count: 4    min: -123904732894572" +
+        String expectedString = "[STAT] File: test.txt              count: 4     min: -123904732894572" +
                 "     max: 12323546             sum: -123904720571026.216863535284434 " +
                 "avg: -30976180142756.5542158838211085" + System.lineSeparator();
 

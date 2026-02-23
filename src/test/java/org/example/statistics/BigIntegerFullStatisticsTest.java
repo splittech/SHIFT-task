@@ -26,7 +26,7 @@ class BigIntegerFullStatisticsTest {
     void printStatistics() {
         BaseStatistics statisticsService = new BigIntegerFullStatistics("test.txt");
         String[] testValues = {"546547658768980", "-239434875634258", "1234", "0"};
-        String expectedString = "[STAT] File: test.txt              count: 4    min: -239434875634258     max: 546547658768980      sum: 307112783135956      avg: 76778195783989" + System.lineSeparator();
+        String expectedString = "[STAT] File: test.txt              count: 4     min: -239434875634258     max: 546547658768980      sum: 307112783135956      avg: 76778195783989" + System.lineSeparator();
 
         for (String value : testValues) {
             statisticsService.updateStatistics(value);

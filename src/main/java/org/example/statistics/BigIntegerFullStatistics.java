@@ -7,10 +7,11 @@ import java.math.RoundingMode;
 public class BigIntegerFullStatistics extends SummaryStatistics {
     private BigInteger min;
     private BigInteger max;
-    private BigInteger sum = BigInteger.ZERO;
+    private BigInteger sum;
 
     public BigIntegerFullStatistics(String fileName) {
         super(fileName);
+        sum = BigInteger.ZERO;
     }
 
     @Override
@@ -18,10 +19,12 @@ public class BigIntegerFullStatistics extends SummaryStatistics {
         super.updateStatistics(value);
 
         BigInteger integerValue = new BigInteger(value);
-        if (min == null || integerValue.compareTo(min) < 0)
+        if (min == null || integerValue.compareTo(min) < 0) {
             min = integerValue;
-        if (max == null || integerValue.compareTo(max) > 0)
+        }
+        if (max == null || integerValue.compareTo(max) > 0) {
             max = integerValue;
+        }
         sum = sum.add(integerValue);
     }
 
@@ -29,16 +32,16 @@ public class BigIntegerFullStatistics extends SummaryStatistics {
     protected String assembleStatisticsMessage() {
         BigDecimal avg = null;
 
-        if (!lineCount.equals(BigInteger.ZERO)) {
+        if (lineCount != 0) {
             avg = new BigDecimal(sum).divide(new BigDecimal(lineCount), 100, RoundingMode.HALF_UP);
         }
 
-        String additionalInfo = "min: %-20s max: %-20s sum: %-20s avg: %s".formatted(
+        return String.format("%s min: %-20s max: %-20s sum: %-20s avg: %s",
+                super.assembleStatisticsMessage(),
                 formatBigInteger(min),
                 formatBigInteger(max),
                 formatBigInteger(sum),
                 formatBigDecimal(avg)
         );
-        return super.assembleStatisticsMessage() + additionalInfo;
     }
 }

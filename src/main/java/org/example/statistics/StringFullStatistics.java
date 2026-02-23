@@ -1,11 +1,13 @@
 package org.example.statistics;
 
 public class StringFullStatistics extends SummaryStatistics {
-    int minLength = Integer.MAX_VALUE;
-    int maxLength = Integer.MIN_VALUE;
+    private int minLength;
+    private int maxLength;
 
     public StringFullStatistics(String fileName) {
         super(fileName);
+        minLength = Integer.MAX_VALUE;
+        maxLength = Integer.MIN_VALUE;
     }
 
     @Override
@@ -17,7 +19,17 @@ public class StringFullStatistics extends SummaryStatistics {
 
     @Override
     protected String assembleStatisticsMessage() {
-        String additionalInfo = "min length: %-13d max length: %d".formatted(minLength, maxLength);
-        return super.assembleStatisticsMessage() + additionalInfo;
+        return String.format("%s min length: %-13s max length: %s",
+                super.assembleStatisticsMessage(),
+                formatStringLength(minLength),
+                formatStringLength(maxLength)
+        );
+    }
+
+    private String formatStringLength(int stringLength) {
+        if (lineCount == 0) {
+            return "NaN";
+        }
+        return String.valueOf(stringLength);
     }
 }

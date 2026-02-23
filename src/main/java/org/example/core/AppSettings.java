@@ -3,12 +3,11 @@ package org.example.core;
 import java.nio.file.Path;
 
 
-
 public record AppSettings(
-    Path outputFilesPath,
-    String outputFilesPrefix,
-    FileWriteMode fileWriteMode,
-    StatisticsLevel statisticsLevel
+        Path outputFilesPath,
+        String outputFilesPrefix,
+        FileWriteMode fileWriteMode,
+        StatisticsLevel statisticsLevel
 ) {
     public static final Path DEFAULT_OUTPUT_FILES_PATH = Path.of("");
     public static final String DEFAULT_OUTPUT_FILES_PREFIX = "";

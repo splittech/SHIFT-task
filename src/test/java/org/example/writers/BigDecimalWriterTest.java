@@ -13,12 +13,12 @@ class BigDecimalWriterTest {
     @Test
     void write_manyFloatValues() throws IOException {
         String[] testValues = {"3.1415", "-0.001", "1.528535047E-25"};
-        BaseFileWriter writer = new BigDecimalFileWriter(AppSettings.defaultSettings());
+        BaseTypedFileWriter writer = new BigDecimalFileWriter(AppSettings.defaultSettings());
         Path createdFile = Path.of(writer.getBaseFileName());
         Files.deleteIfExists(createdFile);
 
         for (String testValue : testValues) {
-            writer.tryWriteLine(testValue);
+            writer.tryWriteTypedString(testValue);
         }
         writer.close();
         Assertions.assertTrue(Files.exists(createdFile));

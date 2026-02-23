@@ -7,12 +7,12 @@ import org.example.statistics.SummaryStatistics;
 
 import java.math.BigInteger;
 
-public class BigIntegerFileWriter extends BaseFileWriter {
+public class BigIntegerFileWriter extends BaseTypedFileWriter {
     public static final String BASE_FILE_NAME = "integers.txt";
 
     public BigIntegerFileWriter(AppSettings settings) {
         String fileName = settings.outputFilesPrefix() + BASE_FILE_NAME;
-        BaseStatistics statisticsService = switch (settings.statisticsLevel()){
+        BaseStatistics statisticsService = switch (settings.statisticsLevel()) {
             case FULL -> new BigIntegerFullStatistics(fileName);
             case SUMMARY -> new SummaryStatistics(fileName);
             case NONE -> null;
